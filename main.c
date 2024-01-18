@@ -105,23 +105,21 @@ void process_line(char *line, stack_t **stack, unsigned int *line_number)
 
 		if (!argument || !is_digit(argument))
 		{
-			fprintf(stderr, "L%u: usage: push integer\n", line_number);
+			fprintf(stderr, "L%u: usage: push integer\n", *line_number);
 			free(line);
-			fclose(file);
 			free_stack(stack);
 			exit(EXIT_FAILURE);
 		}
-			push(&stack, atoi(argument));
+			push(stack, atoi(argument));
 	}
 	else if (strcmp(line, "pall") == 0)
 	{
-		pall(&stack, line_number);
+		pall(stack, *line_number);
 	}
 	else
 	{
 		fprintf(stderr, "L%u: unknown instruction %s\n", *line_number, line);
 		free(line);
-		fclose(file);
 		free_stack(stack);
 		exit(EXIT_FAILURE);
 	}

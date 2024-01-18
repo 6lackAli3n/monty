@@ -37,4 +37,6 @@ typedef struct instruction_s
 /* Function prototypes */
 void push(stack_t **stack, int value);
 void pall(stack_t **stack, unsigned int line_number);
+void process_line(char *line, stack_t **stack, unsigned int *line_number);
+
 #endif /* MONTY_H */
