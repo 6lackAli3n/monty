@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
 		return (EXIT_FAILURE);
 	}
 	file = fopen(argv[1], "r");
-	if (!file)
+	if (file == NULL)
 	{
 		fprintf(stderr, "Error: can't open file %s\n", argv[1]);
 		return (EXIT_FAILURE);
@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
 	free(line);
 	fclose(file);
 	free_stack(&stack);
-	return (EXIT_FAILURE);
+	return (0);
 }
 
 /**
@@ -105,7 +105,7 @@ void process_line(char *line, stack_t **stack, unsigned int *line_number, FILE *
 		return;
 
 	argument = strtok(NULL, " \t\n");
-	if (!strcmp(opcode, "push"))
+	if (!strcmp(opcode, "push") == 0)
 	{
 		if (!argument || !is_digit(argument))
 		{
@@ -117,7 +117,7 @@ void process_line(char *line, stack_t **stack, unsigned int *line_number, FILE *
 		}
 			push(stack, atoi(argument));
 	}
-	else if (!strcmp(opcode, "pall"))
+	else if (!strcmp(opcode, "pall") == 0)
 	{
 		pall(stack, *line_number);
 	}
