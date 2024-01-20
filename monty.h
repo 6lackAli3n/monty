@@ -35,9 +35,11 @@ typedef struct instruction_s
 } instruction_t;
 
 /* Function prototypes */
+void monty(char *file_path);
 void push(stack_t **stack, int value);
 void pall(stack_t **stack, unsigned int line_number);
 void process_line(char *line, stack_t **stack, unsigned int *line_number, FILE *file);
 void pint(stack_t **stack, unsigned int line_number);
 void pop(stack_t **stack, unsigned int line_number);
+void swap(stack_t **stack, unsigned int line_number);
 #endif /* MONTY_H */
