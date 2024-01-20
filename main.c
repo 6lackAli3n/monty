@@ -75,9 +75,8 @@ int main(int argc, char *argv[])
 
 	while (getline(&line, &len, file) != -1)
 	{
+		process_line(line, &stack, &line_number, file);
 		line_number++;
-		line[strcspn(line, "\r\n")] = '\0';
-		process_line(line, &stack, &line_number);
 	}
 	free(line);
 	fclose(file);
@@ -97,7 +96,7 @@ int main(int argc, char *argv[])
  * This function helps modularize the code in the main function, making it more
  * readable and maintainable.
  */
-void process_line(char *line, stack_t **stack, unsigned int *line_number)
+void process_line(char *line, stack_t **stack, unsigned int *line_number, FILE *file)
 {
 	char *opcode, *argument;
 
@@ -111,6 +110,9 @@ void process_line(char *line, stack_t **stack, unsigned int *line_number)
 		if (!argument || !is_digit(argument))
 		{
 			fprintf(stderr, "L%u: usage: push integer\n", *line_number);
+			free_stack(stack);
+			fclose(file);
+			free(line);
 			exit(EXIT_FAILURE);
 		}
 			push(stack, atoi(argument));
@@ -130,6 +132,9 @@ void process_line(char *line, stack_t **stack, unsigned int *line_number)
 	else
 	{
 		fprintf(stderr, "L%u: unknown instruction %s\n", *line_number, opcode);
+		free_stack(stack);
+		fclose(file);
+		free(line);
 		exit(EXIT_FAILURE);
 	}
 }
