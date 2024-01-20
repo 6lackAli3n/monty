@@ -64,11 +64,11 @@ int main(int argc, char *argv[])
 
 	if (argc != 2)
 	{
-		fprintf(stderr, "USAGE: %sfilename\n", argv[0]);
+		fprintf(stderr, "USAGE: %s filename\n", argv[0]);
 		return (EXIT_FAILURE);
 	}
 	file = fopen(argv[1], "r");
-	if (file == NULL)
+	if (!file)
 	{
 		fprintf(stderr, "Error: can't open file %s\n", argv[1]);
 		return (EXIT_FAILURE);
@@ -90,6 +90,7 @@ int main(int argc, char *argv[])
  * @line: The line of Monty byte code to be processed
  * @stack: Double pointer to the head of the stack
  * @line_number: Pointer to the current line number in the Monty byte code file
+ * @file: the file being read.
  *
  * Description: The process_line function takes a line of Monty byte code
  * and interprets the opcode to perform the corresponding operation
@@ -97,7 +98,8 @@ int main(int argc, char *argv[])
  * This function helps modularize the code in the main function, making it more
  * readable and maintainable.
  */
-void process_line(char *line, stack_t **stack, unsigned int *line_number, FILE *file)
+void process_line(char *line, stack_t **stack,
+		unsigned int *line_number, FILE *file)
 {
 	char *opcode, *argument;
 
