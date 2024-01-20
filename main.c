@@ -114,6 +114,8 @@ void process_line(char *line, stack_t **stack,
 		{
 			fprintf(stderr, "L%u: usage: push integer\n", *line_number);
 			free_stack(stack);
+			fclose(file);
+			free(line);
 			exit(EXIT_FAILURE);
 		}
 			push(stack, atoi(argument));
