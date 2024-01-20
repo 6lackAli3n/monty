@@ -15,11 +15,12 @@
  */
 int is_digit(const char *str)
 {
-	while (*str)
+	if (!str)
+		return (0);
+	for (; *str; str++)
 	{
-		if (!isdigit((unsigned char)*str))
+		if (!isdigit(*str))
 			return (0);
-		str++;
 	}
 	return (1);
 }
@@ -35,10 +36,9 @@ int is_digit(const char *str)
  */
 void free_stack(stack_t **stack)
 {
-	stack_t *current = *stack;
-	stack_t *next;
+	stack_t *current = *stack, *next;
 
-	while (current != NULL)
+	while (current)
 	{
 		next = current->next;
 		free(current);
@@ -99,20 +99,23 @@ int main(int argc, char *argv[])
  */
 void process_line(char *line, stack_t **stack, unsigned int *line_number)
 {
-	if (strcmp(line, "push") == 0)
-	{
-		char *argument = strtok(NULL, " ");
+	char *opcode, *argument;
 
+	opcode = strtok(line, " \t\n");
+	if (!opcode || opcode[0] == '#')
+		return;
+
+	argument = strtok(NULL, " \t\n");
+	if (!strcmp(opcode, "push"))
+	{
 		if (!argument || !is_digit(argument))
 		{
 			fprintf(stderr, "L%u: usage: push integer\n", *line_number);
-			free(line);
-			free_stack(stack);
 			exit(EXIT_FAILURE);
 		}
 			push(stack, atoi(argument));
 	}
-	else if (strcmp(line, "pall") == 0)
+	else if (!strcmp(opcode, "pall"))
 	{
 		pall(stack, *line_number);
 	}
@@ -126,9 +129,7 @@ void process_line(char *line, stack_t **stack, unsigned int *line_number)
 	}
 	else
 	{
-		fprintf(stderr, "L%u: unknown instruction %s\n", *line_number, line);
-		free(line);
-		free_stack(stack);
+		fprintf(stderr, "L%u: unknown instruction %s\n", *line_number, opcode);
 		exit(EXIT_FAILURE);
 	}
 }
