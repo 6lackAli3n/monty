@@ -55,15 +55,16 @@ void free_stack(stack_t **stack)
  */
 int main(int argc, char *argv[])
 {
-	FILE *file;
 	stack_t *stack = NULL;
 	char *line = NULL;
 	size_t len = 0;
 	unsigned int line_number = 0;
 
+	FILE *file;
+
 	if (argc != 2)
 	{
-		fprintf(stderr, "USAGE: monty file\n");
+		fprintf(stderr, "USAGE: %sfilename\n", argv[0]);
 		return (EXIT_FAILURE);
 	}
 	file = fopen(argv[1], "r");
@@ -81,7 +82,7 @@ int main(int argc, char *argv[])
 	free(line);
 	fclose(file);
 	free_stack(&stack);
-	return (0);
+	return (EXIT_SUCCESS);
 }
 
 /**
@@ -105,7 +106,7 @@ void process_line(char *line, stack_t **stack, unsigned int *line_number, FILE *
 		return;
 
 	argument = strtok(NULL, " \t\n");
-	if (!strcmp(opcode, "push") == 0)
+	if (strcmp(opcode, "push") == 0)
 	{
 		if (!argument || !is_digit(argument))
 		{
@@ -117,7 +118,7 @@ void process_line(char *line, stack_t **stack, unsigned int *line_number, FILE *
 		}
 			push(stack, atoi(argument));
 	}
-	else if (!strcmp(opcode, "pall") == 0)
+	else if (strcmp(opcode, "pall") == 0)
 	{
 		pall(stack, *line_number);
 	}
