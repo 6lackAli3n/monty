@@ -114,8 +114,6 @@ void process_line(char *line, stack_t **stack,
 		{
 			fprintf(stderr, "L%u: usage: push integer\n", *line_number);
 			free_stack(stack);
-			fclose(file);
-			free(line);
 			exit(EXIT_FAILURE);
 		}
 			push(stack, atoi(argument));
@@ -124,11 +122,11 @@ void process_line(char *line, stack_t **stack,
 	{
 		pall(stack, *line_number);
 	}
-	else if (strcmp(line, "pint") == 0)
+	else if (strcmp(opcode, "pint") == 0)
 	{
 		pint(stack, *line_number);
 	}
-	else if (strcmp(line, "pop") == 0)
+	else if (strcmp(opcode, "pop") == 0)
 	{
 		pop(stack, *line_number);
 	}
